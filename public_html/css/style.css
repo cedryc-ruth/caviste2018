@@ -1,0 +1,24 @@
+/* 
+    Created on : 23-févr.-2018, 20:14:25
+    Author     : ceruth
+*/
+body {
+    background-color: lightyellow;
+}
+main, header {
+    background-color: white;
+    width: 80%;
+    border:3px solid brown;
+    box-shadow: 5px 5px 15px brown;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 15px;
+    overflow: hidden;
+}
+
+header {
+    border: none;
+    margin: 10px auto;
+    border:1px solid silver;
+    box-shadow: 5px 5px 15px black;
+}

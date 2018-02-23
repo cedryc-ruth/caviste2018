@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+<head>
+<title>Client Caviste</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery-3.2.1.slim.min.js"></script>
+<script src="js/popper.js/1.12.9/umd/popper.min.js"></script>
+</head>
+<body>
+<header>
+    <div id="toolbar">
+        <form id="frmSearch">
+            <div>
+                <input type="text" name="search">
+                <button id="btSearch" name="btSearch">Search</button>
+                <button id="btNewWine" name="btNewWine">New Wine</button>
+            </div>
+        </form>
+    </div>
+</header>
+<main>
+    <div class="row">
+        <div class="col-lg-3">
+            <ul class="list-group" id="liste">
+                <li class="list-group-item">VIN 1</li>
+                <li class="list-group-item">VIN 2</li>
+                <li class="list-group-item">VIN 3</li>
+                <li class="list-group-item">VIN 4</li>
+                <li class="list-group-item">VIN 5</li>
+            </ul>
+        </div>
+        <div class="col-lg-9">
+            <form id="frmWine">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="idWine">Id:</label>
+                            <input type="text" class="form-control" id="idWine" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="idWine">Name:</label>
+                            <input type="text" class="form-control" id="idWine" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="idWine">Grapes:</label>
+                            <input type="text" class="form-control" id="idWine" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="idWine">Country:</label>
+                            <input type="text" class="form-control" id="idWine" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="idWine">Region:</label>
+                            <input type="text" class="form-control" id="idWine" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="idWine">Year:</label>
+                            <input type="text" class="form-control" id="idWine" placeholder="">
+                        </div>
+                        <button class="btn btn-primary">Save</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </div>
+                    <div class="col-lg-6">
+                        <figure>
+                            <img src="pictures/wine1.jpg" alt="Wine 1">
+                            <figcaption>Wine 1</figcaption>
+                        </figure>
+                        <div class="form-group">
+                            <label for="notes">Notes:</label>
+                            <textarea name="notes" id="notes" class="form-control" cols="100%" rows="5"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+<footer>&copy; EPFC</footer>
+</body>
+</html>
