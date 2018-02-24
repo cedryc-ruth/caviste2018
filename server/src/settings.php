@@ -1,4 +1,8 @@
 <?php
+use \RedBeanPHP\R as R;
+
+R::setup('mysql:host=localhost;dbname=caviste','root', 'root');
+
 return [
     'settings' => [
         'displayErrorDetails' => true, // set to false in production
