@@ -14,8 +14,14 @@
         vins = JSON.parse(data);
         
         $.each(vins, function(key, vin) {
-            $('#liste').append('<li>'+vin.name+'</li>');
+            $('#liste').append('<li class="list-group-item">'+vin.name+'</li>');
         });
+    }).fail(function() {
+        let notification = '<div class="alert alert-danger" role="alert">\n\
+            Désolé, le service n\'est pas disponible en ce moment.\n\
+        </div>';
+    
+        $('#toolbar').append(notification);
     });
     
     //Gestion des commandes
@@ -25,11 +31,20 @@
         
         //Envoyer une requête au serveur pour obtenir les vins 
         //dont le nom contient le mot-clé
-        
-        
-        //Mettre à jour la liste des vins (ul) avec les vins obtenus
-        
-        alert(keyword);
+        $.get(API_URL + '/wines/search/'+keyword, function(data) {
+            vins = JSON.parse(data);
+
+            //Mettre à jour la liste des vins (ul) avec les vins obtenus
+            $.each(vins, function(key, vin) {
+                $('#liste').append('<li class="list-group-item">'+vin.name+'</li>');
+            });
+        }).fail(function() {
+            let notification = '<div class="alert alert-danger" role="alert">\n\
+                Désolé, le service n\'est pas disponible en ce moment.\n\
+            </div>';
+
+            $('#toolbar').append(notification);
+        });    
     });
     
 });
