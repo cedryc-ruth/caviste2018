@@ -30,7 +30,11 @@ $app->get('/api/wines', function(Request $request, Response $response, array $ar
 });
 
 $app->get('/api/wines/search/{name}', function(Request $request, Response $response, array $args) {
-    echo "Vin dont le nom contient...";
+    $name = $args['name'];
+    
+    $wines = R::find('wine','name LIKE ?',[ "%$name%" ]);
+    //var_dump($wines);
+    return json_encode($wines,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 });
 
 $app->get('/api/wines/10', function(Request $request, Response $response, array $args) {
