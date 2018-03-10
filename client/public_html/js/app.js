@@ -78,10 +78,39 @@ function clearForm() {
     $('#frmWine #nameWine').focus();
 }
 
+function getFormData() {
+    let vin = {};
+    
+    vin.id = $('#frmWine #idWine').val();
+    vin.name = $('#frmWine #nameWine').val();
+    vin.grapes = $('#frmWine #grapesWine').val();
+    vin.country = $('#frmWine #countryWine').val();
+    vin.region = $('#frmWine #regionWine').val();
+    vin.year = $('#frmWine #yearWine').val();
+    vin.description = $('#frmWine #notes').val();
+    vin.picture = $('#frmWine figure img').attr('src');
+    
+    //Validation des champs
+    if((vin.id.trim()!='' ? !$.isNumeric(vin.id) : false) || !$.isNumeric(vin.year) 
+            || vin.name.trim()==''
+            || vin.grapes.trim()==''
+            || vin.country.trim()==''
+            || vin.region.trim()=='') {
+
+        return null;
+    }
+    return vin;
+}
+
 $(document).ready(function() {    
+  //Initialisation de la page
+    //Afficher la liste des vins
     showWines();
     
-    //Gestion des commandes
+    //Préparer le formulaire
+    $('#yearWine').val( (new Date()).getFullYear() );
+    
+  //Gestion des commandes
     $('input[name=search]').on('keypress',function() {
         if(event.keyCode==13) {
             $('#btSearch').click();
@@ -135,6 +164,33 @@ $(document).ready(function() {
         removeError();
         
         clearForm();
+    });
+    
+    $('#btSaveWine').on('click', function() {
+        //Retirer la notification d'erreur
+        removeError();
+        
+        //Récupérer les données du formulaire
+        let vin = getFormData();
+        
+        if(vin) {
+            //Sauver le vin dans la base de données
+            $.post(API_URL + '/wines', vin, function(data) {
+                if(data) {
+                    reportError('Le vin a bien été enregistré.','success');
+                } else {
+                    reportError('Désolé, Impossible de sauver ce vin!','error');
+                }
+            },'json').fail(function() {
+                reportError('Désolé, Impossible de sauver ce vin!','error');
+            });
+        } else {
+            reportError('Veuillez remplir le formulaire en respectant les consignes, svp!','error');
+        }
+        
+        //Annuler l'envoi du formulaire
+        event.preventDefault();
+        return false;
     });
     
 });

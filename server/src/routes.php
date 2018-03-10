@@ -46,7 +46,21 @@ $app->get('/api/wines/{id}', function(Request $request, Response $response, arra
 });
 
 $app->post('/api/wines', function(Request $request, Response $response, array $args) {
-    echo "Ajoute un vin!";
+    $wineData =$request->getParsedBody();
+    
+    $wine = R::dispense('wine');
+    $wine->name = $wineData['name'];
+    $wine->grapes = $wineData['grapes'];
+    $wine->country = $wineData['country'];
+    $wine->region = $wineData['region'];
+    $wine->year = $wineData['year'];
+    $wine->picture = $wineData['picture'];
+    $wine->description = $wineData['description'];
+    
+    if($id = R::store($wine)) {
+        return json_encode(true);
+    }
+    return json_encode(false);
 });
 
 $app->put('/api/wines/10', function(Request $request, Response $response, array $args) {
