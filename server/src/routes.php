@@ -37,8 +37,12 @@ $app->get('/api/wines/search/{name}', function(Request $request, Response $respo
     return json_encode($wines,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 });
 
-$app->get('/api/wines/10', function(Request $request, Response $response, array $args) {
-    echo "Vin n°10";
+$app->get('/api/wines/{id}', function(Request $request, Response $response, array $args) {
+    $id = $args['id'];
+    
+    $wine = R::load('wine',$id);
+    //var_dump($wine);die;
+    return json_encode($wine,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 });
 
 $app->post('/api/wines', function(Request $request, Response $response, array $args) {

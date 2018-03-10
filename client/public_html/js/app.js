@@ -3,6 +3,8 @@
  * 
  * @author C. Ruth
  */
+const API_URL = 'http://caviste.localhost/api';
+
 function reportError(message, type = 'secondary') {
     $('#toolbar .alert').html(message);
     
@@ -22,21 +24,62 @@ function removeError() {
     $('#toolbar .alert').removeClass().addClass('alert');
 }
 
-$(document).ready(function() {
-    const API_URL = 'http://caviste.localhost/api';
-    
+function showWines() {
     //Initialisation 
     $('#liste').empty();  
     
     $.get(API_URL + '/wines', function(data) {
-        vins = JSON.parse(data);
+        let vins = JSON.parse(data);
         
         $.each(vins, function(key, vin) {
-            $('#liste').append('<li class="list-group-item">'+vin.name+'</li>');
+            $('#liste').append('<li class="list-group-item" data-id="'+vin.id+'">'+vin.name+'</li>');
+        });
+        
+        $('#liste li').on('click', function() {
+            let idWine = $(this).data('id');
+
+            $.get(API_URL + '/wines/'+idWine, function(data) {
+                let vin = JSON.parse(data);
+                
+                fillForm(vin);
+                
+            }).fail(function() {
+                reportError('Désolé, la sélection n\'est pas disponible en ce moment.','error');
+            });
         });
     }).fail(function() {
         reportError('Désolé, le service n\'est pas disponible en ce moment.','error');
     });
+}
+
+function fillForm(vin) {
+    $('#frmWine #idWine').val(vin.id);
+    $('#frmWine #nameWine').val(vin.name);
+    $('#frmWine #grapesWine').val(vin.grapes);
+    $('#frmWine #countryWine').val(vin.country);
+    $('#frmWine #regionWine').val(vin.region);
+    $('#frmWine #yearWine').val(vin.year);
+    $('#frmWine #notes').val(vin.description);
+    $('#frmWine figure img').attr('src','pics/'+vin.picture);
+    $('#frmWine figure figcaption').html(vin.name);    
+}
+
+function clearForm() {
+    $('#frmWine #idWine').val('');
+    $('#frmWine #nameWine').val('');
+    $('#frmWine #grapesWine').val('');
+    $('#frmWine #countryWine').val('');
+    $('#frmWine #regionWine').val('');
+    $('#frmWine #yearWine').val('');
+    $('#frmWine #notes').val('');
+    $('#frmWine figure img').attr('src','pictures/wine1.jpg');
+    $('#frmWine figure figcaption').html('Wine 1');
+    
+    $('#frmWine #nameWine').focus();
+}
+
+$(document).ready(function() {    
+    showWines();
     
     //Gestion des commandes
     $('input[name=search]').on('keypress',function() {
@@ -62,7 +105,7 @@ $(document).ready(function() {
 
                 //Mettre à jour la liste des vins (ul) avec les vins obtenus
                 $.each(vins, function(key, vin) {
-                    $('#liste').append('<li class="list-group-item">'+vin.name+'</li>');
+                    $('#liste').append('<li class="list-group-item" data-id="'+vin.id+'">'+vin.name+'</li>');
                 });
             }).fail(function() {
                 reportError('Désolé, la recherche n\'est pas disponible en ce moment.','error');
@@ -74,6 +117,24 @@ $(document).ready(function() {
         //Annuler l'envoi du formulaire
         event.preventDefault();
         return false;
+    });
+    
+    $('#btAllWines').on('click', function() {
+        //Retirer la notification d'erreur
+        removeError();
+        
+        //Vider le champ de recherche
+        $('input[name=search]').val('');
+                
+        //Afficher la liste de tous les vins
+        showWines();
+    });
+    
+    $('#btNewWine').on('click', function() {
+        //Retirer la notification d'erreur
+        removeError();
+        
+        clearForm();
     });
     
 });

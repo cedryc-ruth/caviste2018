@@ -27,6 +27,7 @@ and open the template in the editor.
             <div>
                 <input type="text" name="search">
                 <button type="button" id="btSearch" name="btSearch">Search</button>
+                <button type="button" id="btAllWines" name="btAllWines">All Wines</button>
                 <button type="button" id="btNewWine" name="btNewWine">New Wine</button>
             </div>
         </form>
@@ -50,27 +51,27 @@ and open the template in the editor.
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="idWine">Id:</label>
-                            <input type="text" class="form-control" id="idWine" placeholder="">
+                            <input type="number" class="form-control" id="idWine" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="idWine">Name:</label>
-                            <input type="text" class="form-control" id="idWine" placeholder="">
+                            <label for="nameWine">Name:</label>
+                            <input type="text" class="form-control" id="nameWine">
                         </div>
                         <div class="form-group">
-                            <label for="idWine">Grapes:</label>
-                            <input type="text" class="form-control" id="idWine" placeholder="">
+                            <label for="grapesWine">Grapes:</label>
+                            <input type="text" class="form-control" id="grapesWine">
                         </div>
                         <div class="form-group">
-                            <label for="idWine">Country:</label>
-                            <input type="text" class="form-control" id="idWine" placeholder="">
+                            <label for="countryWine">Country:</label>
+                            <input type="text" class="form-control" id="countryWine">
                         </div>
                         <div class="form-group">
-                            <label for="idWine">Region:</label>
-                            <input type="text" class="form-control" id="idWine" placeholder="">
+                            <label for="regionWine">Region:</label>
+                            <input type="text" class="form-control" id="regionWine">
                         </div>
                         <div class="form-group">
-                            <label for="idWine">Year:</label>
-                            <input type="text" class="form-control" id="idWine" placeholder="">
+                            <label for="yearWine">Year:</label>
+                            <input type="number" class="form-control" id="yearWine">
                         </div>
                         <button class="btn btn-primary">Save</button>
                         <button class="btn btn-danger">Delete</button>
