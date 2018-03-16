@@ -67,8 +67,14 @@ $app->put('/api/wines/10', function(Request $request, Response $response, array 
     echo "Modifie le vin n°10";
 });
 
-$app->delete('/api/wines/10', function(Request $request, Response $response, array $args) {
-    echo "Supprime le vin n°10";
+$app->delete('/api/wines/{id}', function(Request $request, Response $response, array $args) {
+    R::trash('wine', $args['id']);
+    $wine = R::find('wine','id='.$args['id']);
+    
+    if(empty($wine)) {
+        return json_encode(true);
+    }
+    return json_encode(false);
 });
 
 $app->get('/catalogue/', function(Request $request, Response $response, array $args) {
