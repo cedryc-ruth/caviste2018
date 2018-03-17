@@ -22,3 +22,11 @@ header {
     border:1px solid silver;
     box-shadow: 5px 5px 15px black;
 }
+
+#frmWine figure {
+    overflow: hidden;
+}
+
+#frmWine figure figcaption {
+    text-align: center;
+}
