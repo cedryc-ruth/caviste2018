@@ -16,6 +16,9 @@ and open the template in the editor.
 <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
 <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
+<link href="http://hayageek.github.io/jQuery-Upload-File/4.0.11/uploadfile.css" rel="stylesheet">
+<script src="http://hayageek.github.io/jQuery-Upload-File/4.0.11/jquery.uploadfile.min.js"></script>
+
 <!-- Personal styles & scripts -->
 <link rel="stylesheet" href="css/style.css">
 <script src="js/app.js"></script>
@@ -81,6 +84,12 @@ and open the template in the editor.
                             <img src="pictures/wine1.jpg" alt="Wine 1">
                             <figcaption>Wine 1</figcaption>
                         </figure>
+                        <div class="input-group mb-3">
+                            <div class="custom-file" id="uploadZone">
+                           <!--   <input type="file" class="custom-file-input" name="newPicture" id="newPicture"> -->
+                           <!--   <label class="custom-file-label" for="newPicture">Choisir image</label> -->
+                            </div>
+                          </div>
                         <div class="form-group">
                             <label for="notes">Notes:</label>
                             <textarea name="notes" id="notes" class="form-control" cols="100%" rows="5"></textarea>

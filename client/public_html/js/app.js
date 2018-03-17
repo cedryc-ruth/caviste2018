@@ -4,6 +4,7 @@
  * @author C. Ruth
  */
 const API_URL = 'http://caviste.localhost/api';
+const CATALOGUE_URL = 'http://caviste.localhost/caviste2018/server/public';
 
 function reportError(message, type = 'secondary') {
     $('#toolbar .alert').html(message);
@@ -60,8 +61,25 @@ function fillForm(vin) {
     $('#frmWine #regionWine').val(vin.region);
     $('#frmWine #yearWine').val(vin.year);
     $('#frmWine #notes').val(vin.description);
-    $('#frmWine figure img').attr('src','pics/'+vin.picture);
-    $('#frmWine figure figcaption').html(vin.name);    
+    $('#frmWine figure img').attr('src',CATALOGUE_URL+'/pics/'+vin.picture);
+    $('#frmWine figure figcaption').html(vin.name);
+    
+    $('#uploadZone').uploadFile({
+        'url':API_URL+'/wines/'+getFormData()['id']+'/pics',
+        'fileName':'newPicture',
+        'acceptFiles':'image/*',
+        'onSuccess': function(files,data,xhr,pd) {
+            if(data) {
+                //Actualiser l'image du vin
+                $('#frmWine figure img').attr('src',CATALOGUE_URL+'/pics/'+files[0]);
+
+                reportError('L\'image du vin a bien été remplacée.','success');
+            } else {
+                reportError('Désolé, Impossible de remplacer l\'image de ce vin!','error');
+            }
+
+        }
+    });
 }
 
 function clearForm() {
@@ -88,7 +106,8 @@ function getFormData() {
     vin.region = $('#frmWine #regionWine').val();
     vin.year = $('#frmWine #yearWine').val();
     vin.description = $('#frmWine #notes').val();
-    vin.picture = $('#frmWine figure img').attr('src');
+    vin.picture = $('#frmWine figure img').attr('src')
+        .slice($('#frmWine figure img').attr('src').lastIndexOf('/'));
     
     //Validation des champs
     if((vin.id.trim()!='' ? !$.isNumeric(vin.id) : false) || !$.isNumeric(vin.year) 
@@ -174,16 +193,40 @@ $(document).ready(function() {
         let vin = getFormData();
         
         if(vin) {
-            //Sauver le vin dans la base de données
-            $.post(API_URL + '/wines', vin, function(data) {
-                if(data) {
-                    reportError('Le vin a bien été enregistré.','success');
-                } else {
+            if(vin.id=='') {    //Insertion d'un nouveau vin
+                //Sauver le vin dans la base de données
+                $.post(API_URL + '/wines', vin, function(data) {
+                    if(data) {
+                        //Actualiser la liste de tous les vins
+                        showWines();
+                        clearForm();
+                        
+                        reportError('Le vin a bien été enregistré.','success');
+                    } else {
+                        reportError('Désolé, Impossible de sauver ce vin!','error');
+                    }
+                },'json').fail(function() {
                     reportError('Désolé, Impossible de sauver ce vin!','error');
-                }
-            },'json').fail(function() {
-                reportError('Désolé, Impossible de sauver ce vin!','error');
-            });
+                });
+            } else {    //Modification d'un vin existant
+                $.ajax({
+                    'url':API_URL + '/wines/'+vin.id,
+                    'method':'PUT',
+                    'data':JSON.stringify(vin),
+                    'contentType':'application/json'
+                }).done(function(data) {
+                    if(data) {
+                        //Actualiser la liste de tous les vins
+                        showWines();
+                        
+                        reportError('Le vin a bien été modifié.','success');
+                    } else {
+                        reportError('Désolé, Impossible de modifier ce vin!','error');
+                    }
+                }).fail(function() {
+                    reportError('Désolé, Impossible de modifier ce vin!','error');
+                });
+            }
         } else {
             reportError('Veuillez remplir le formulaire en respectant les consignes, svp!','error');
         }
