@@ -31,9 +31,15 @@ function showWines() {
     
     $.get(API_URL + '/wines', function(data) {
         let vins = JSON.parse(data);
+        let countries = [];
         
         $.each(vins, function(key, vin) {
             $('#liste').append('<li class="list-group-item" data-id="'+vin.id+'">'+vin.name+'</li>');
+            
+            //Ajout des pays dans un tableau pour affichage dans le filtre
+            if(countries.indexOf(vin.country)===-1) {
+                countries.push(vin.country);
+            }
         });
         
         $('#liste li').on('click', function() {
@@ -43,6 +49,49 @@ function showWines() {
                 let vin = JSON.parse(data);
                 
                 fillForm(vin);
+                
+            }).fail(function() {
+                reportError('Désolé, la sélection n\'est pas disponible en ce moment.','error');
+            });
+        });
+        
+        //Mise à jour de la liste des filtres par pays
+        $('#listePays').empty();
+        
+        countries.forEach(country => {
+            $('#listePays').append('<a class="dropdown-item" href="#">'+country+'</a>');
+        });
+        
+        $('#listePays a').on('click', function() {
+            let country = $(this).text();
+
+            $.get(API_URL + '/wines', function(data) {
+                let vins = JSON.parse(data);    //console.log(vins);
+                
+                //Filtrer la liste des vins
+                vins = $.map(vins, function(vin, index) {
+                    return [vin];
+                });     //console.log(vins);
+                
+                vins = vins.filter(vin => vin.country == country);
+                
+                $('#liste').empty();
+                $.each(vins, function(key, vin) {
+                    $('#liste').append('<li class="list-group-item" data-id="'+vin.id+'">'+vin.name+'</li>');
+                });
+                
+                $('#liste li').on('click', function() {
+                    let idWine = $(this).data('id');
+
+                    $.get(API_URL + '/wines/'+idWine, function(data) {
+                        let vin = JSON.parse(data);
+
+                        fillForm(vin);
+
+                    }).fail(function() {
+                        reportError('Désolé, la sélection n\'est pas disponible en ce moment.','error');
+                    });
+                });
                 
             }).fail(function() {
                 reportError('Désolé, la sélection n\'est pas disponible en ce moment.','error');
