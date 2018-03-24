@@ -123,7 +123,7 @@ function fillForm(vin) {
                 $('#frmWine figure img').attr('src',CATALOGUE_URL+'/pics/'+files[0]);
 
                 reportError('L\'image du vin a bien été remplacée.','success');
-				$('#frmWine .ajax-file-upload-statusbar').hide('slow');
+		$('#frmWine .ajax-file-upload-statusbar').hide('slow');
             } else {
                 reportError('Désolé, Impossible de remplacer l\'image de ce vin!','error');
             }
