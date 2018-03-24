@@ -76,8 +76,11 @@ and open the template in the editor.
                             <label for="yearWine">Year:</label>
                             <input type="number" value="2000" class="form-control" id="yearWine">
                         </div>
-                        <button type="button" class="btn btn-primary" id="btSaveWine">Save</button>
-                        <button type="button" class="btn btn-danger" id="btDeleteWine">Delete</button>
+                        <div class="form-group">
+                            <label for="notes">Notes:</label>
+                            <textarea name="notes" id="notes" class="form-control" cols="100%" rows="5"></textarea>
+                        </div>
+                        
                     </div>
                     <div class="col-lg-6">
                         <figure>
@@ -89,10 +92,10 @@ and open the template in the editor.
                            <!--   <input type="file" class="custom-file-input" name="newPicture" id="newPicture"> -->
                            <!--   <label class="custom-file-label" for="newPicture">Choisir image</label> -->
                             </div>
-                          </div>
-                        <div class="form-group">
-                            <label for="notes">Notes:</label>
-                            <textarea name="notes" id="notes" class="form-control" cols="100%" rows="5"></textarea>
+                          </div> 
+                        <div class ="text-center">
+                            <button type="button" class="btn btn-primary" id="btSaveWine">Save</button>
+                            <button type="button" class="btn btn-danger" id="btDeleteWine">Delete</button>
                         </div>
                     </div>
                 </div>
