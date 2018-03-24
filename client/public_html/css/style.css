@@ -30,3 +30,8 @@ header {
 #frmWine figure figcaption {
     text-align: center;
 }
+
+footer {
+    text-align: center;
+    margin: 20px 0 5px 0;
+}
