@@ -88,7 +88,7 @@ $app->delete('/api/wines/{id}', function(Request $request, Response $response, a
     if(empty($wine)) {
         return json_encode(true);
     }
-    return json_encode(false);
+    return json_encode(false);  
 });
 
 $app->post('/api/wines/{id}/pics', function(Request $request, Response $response, array $args) {
