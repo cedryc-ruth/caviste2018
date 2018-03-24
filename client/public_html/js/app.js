@@ -239,20 +239,21 @@ $(document).ready(function() {
     $('#btDeleteWine').on('click', function() {
         //Retirer la notification d'erreur
         removeError();
-            let vin = getFormData();
-            if(confirm('Confirmer la suppression ?')){        
+        let vin = getFormData();
+        
+        if(confirm('Confirmer la suppression ?')){        
             $.ajax({
                 'method':'DELETE',
                 'url':API_URL+'/wines/'+vin.id,
             }).done(function(data) {
-            if(data) {
-            //Actualiser la liste de tous les vins
-                showWines();
-                reportError('Le vin a bien été supprimé.','success');
-            }else {
-            
-                reportError('Désolé, Impossible de supprimer ce vin!','error');
-            }
+                if(data) {
+                //Actualiser la liste de tous les vins
+                    showWines();
+                    reportError('Le vin a bien été supprimé.','success');
+                }else {
+
+                    reportError('Désolé, Impossible de supprimer ce vin!','error');
+                }
             }).fail(function() {
                         reportError('Désolé, Impossible de supprimer ce vin!','error'); 
             });
