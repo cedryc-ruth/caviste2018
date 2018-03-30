@@ -7,7 +7,7 @@ const API_URL = 'http://caviste.localhost/api';
 const CATALOGUE_URL = 'http://caviste.localhost/caviste2018/server/public';
 
 function reportError(message, type = 'secondary') {
-    $('#toolbar .alert').html(message).fadeOut(2000);
+    $('#toolbar .alert').html(message).fadeIn(200).fadeOut(2000);
     
     switch(type) {
         case 'error':
@@ -17,6 +17,7 @@ function reportError(message, type = 'secondary') {
         default:
             $('#toolbar .alert').addClass('alert-secondary');
     }
+  
 }
 
 function removeError() {
