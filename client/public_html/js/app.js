@@ -63,10 +63,13 @@ function showWines() {
         $('#listePays').empty();
         $('#listeRegion').empty();
 		
+		$('#listePays').append('<a class="dropdown-item" href="#">Aucun</a>');
         countries.forEach(country => {
             $('#listePays').append('<a class="dropdown-item" href="#">'+country+'</a>');
         });
 		
+		
+		$('#listeRegion').append('<a class="dropdown-item" href="#">Aucun</a>');
 		regions.forEach(region => {
             $('#listeRegion').append('<a class="dropdown-item" href="#">'+region+'</a>');
         });
@@ -74,7 +77,9 @@ function showWines() {
 		// todo : peut-être trouver un moyen d'éviter la redondance => attente que tous les filtres soit fini pour trouver un pattern => Juan (year)
         $('#listePays a').on('click', function() {
             let country = $(this).text();
-
+			
+			$('#dropdownMenuButton').html(country);
+			
             $.get(API_URL + '/wines', function(data) {
                 let vins = JSON.parse(data);    //console.log(vins);
                 
@@ -83,7 +88,7 @@ function showWines() {
                     return [vin];
                 });     //console.log(vins);
                 
-                vins = vins.filter(vin => vin.country == country);
+                vins = country != 'Aucun' ? vins.filter(vin => vin.country == country) : vins;
                 
                 $('#liste').empty();
                 $.each(vins, function(key, vin) {
@@ -111,6 +116,8 @@ function showWines() {
 		$('#listeRegion a').on('click', function() {
             let region = $(this).text();
 
+			$('#dropdownMenuButton2').html(region);
+			
             $.get(API_URL + '/wines', function(data) {
                 let vins = JSON.parse(data);    //console.log(vins);
                 
@@ -119,9 +126,10 @@ function showWines() {
                     return [vin];
                 });     //console.log(vins);
                 
-                vins = vins.filter(vin => vin.region == region);
+                vins = region != 'Aucun' ? vins.filter(vin => vin.region == region) : vins;
                 
                 $('#liste').empty();
+				
                 $.each(vins, function(key, vin) {
                     $('#liste').append('<li class="list-group-item" data-id="'+vin.id+'">'+vin.name+'</li>');
                 });
