@@ -32,13 +32,17 @@ function showWines() {
     $.get(API_URL + '/wines', function(data) {
         let vins = JSON.parse(data);
         let countries = [];
-        
+        let regions   = [];
+		
         $.each(vins, function(key, vin) {
             $('#liste').append('<li class="list-group-item" data-id="'+vin.id+'">'+vin.name+'</li>');
             
             //Ajout des pays dans un tableau pour affichage dans le filtre
             if(countries.indexOf(vin.country)===-1) {
                 countries.push(vin.country);
+            }
+			if(regions.indexOf(vin.region)===-1) {
+                regions.push(vin.region);
             }
         });
         
@@ -57,11 +61,17 @@ function showWines() {
         
         //Mise à jour de la liste des filtres par pays
         $('#listePays').empty();
-        
+        $('#listeRegion').empty();
+		
         countries.forEach(country => {
             $('#listePays').append('<a class="dropdown-item" href="#">'+country+'</a>');
         });
+		
+		regions.forEach(region => {
+            $('#listeRegion').append('<a class="dropdown-item" href="#">'+region+'</a>');
+        });
         
+		// todo : peut-être trouver un moyen d'éviter la redondance => attente que tous les filtres soit fini pour trouver un pattern => Juan (year)
         $('#listePays a').on('click', function() {
             let country = $(this).text();
 
@@ -74,6 +84,42 @@ function showWines() {
                 });     //console.log(vins);
                 
                 vins = vins.filter(vin => vin.country == country);
+                
+                $('#liste').empty();
+                $.each(vins, function(key, vin) {
+                    $('#liste').append('<li class="list-group-item" data-id="'+vin.id+'">'+vin.name+'</li>');
+                });
+                
+                $('#liste li').on('click', function() {
+                    let idWine = $(this).data('id');
+
+                    $.get(API_URL + '/wines/'+idWine, function(data) {
+                        let vin = JSON.parse(data);
+
+                        fillForm(vin);
+
+                    }).fail(function() {
+                        reportError('Désolé, la sélection n\'est pas disponible en ce moment.','error');
+                    });
+                });
+                
+            }).fail(function() {
+                reportError('Désolé, la sélection n\'est pas disponible en ce moment.','error');
+            });
+        });
+		
+		$('#listeRegion a').on('click', function() {
+            let region = $(this).text();
+
+            $.get(API_URL + '/wines', function(data) {
+                let vins = JSON.parse(data);    //console.log(vins);
+                
+                //Filtrer la liste des vins
+                vins = $.map(vins, function(vin, index) {
+                    return [vin];
+                });     //console.log(vins);
+                
+                vins = vins.filter(vin => vin.region == region);
                 
                 $('#liste').empty();
                 $.each(vins, function(key, vin) {
