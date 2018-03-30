@@ -5,6 +5,7 @@
  */
 const API_URL = 'http://caviste.localhost/api';
 const CATALOGUE_URL = 'http://caviste.localhost/caviste2018/server/public';
+let vins = [];
 
 function reportError(message, type = 'secondary') {
     $('#toolbar .alert').html(message);
@@ -30,8 +31,9 @@ function showWines() {
     $('#liste').empty();  
     
     $.get(API_URL + '/wines', function(data) {
-        let vins = JSON.parse(data);
+        vins = JSON.parse(data);
         let countries = [];
+        let years = []; 
         
         $.each(vins, function(key, vin) {
             $('#liste').append('<li class="list-group-item" data-id="'+vin.id+'">'+vin.name+'</li>');
@@ -39,6 +41,7 @@ function showWines() {
             //Ajout des pays dans un tableau pour affichage dans le filtre
             if(countries.indexOf(vin.country)===-1) {
                 countries.push(vin.country);
+                years.push(vin.year);
             }
         });
         
@@ -54,6 +57,39 @@ function showWines() {
                 reportError('Désolé, la sélection n\'est pas disponible en ce moment.','error');
             });
         });
+        
+        //Mise à jour de la liste des filtres par année
+              
+        $('#listYears').empty();
+        
+        years.forEach(year => {
+           $('#listYears').append('<a class="dropdown-item year-item" href="#">'+year+'</a>');
+        });
+        
+        $('.year-item').on('click', function(){
+             let yearSelected = $(this).text();
+             var vinsArray = [];
+             var count = Object.keys(vins).length;
+             
+             for(var i = 1; i <= count; i++){
+             
+                 vinsArray.push(vins[i]);
+             }
+            
+             console.log(yearSelected);
+             vinNewArray = vinsArray.filter( vin => {
+                 return vin.year == yearSelected
+             })
+            
+            $('#liste').empty();
+            $('#dropDownYear').text(yearSelected);
+            $.each(vinNewArray, function(key, vin) {
+                $('#liste').append('<li class="list-group-item" data-id="'+vin.id+'">'+vin.name+'</li>');
+            });
+        })
+        
+        
+        
         
         //Mise à jour de la liste des filtres par pays
         $('#listePays').empty();
