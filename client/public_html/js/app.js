@@ -41,9 +41,15 @@ function showWines() {
             //Ajout des pays dans un tableau pour affichage dans le filtre
             if(countries.indexOf(vin.country)===-1) {
                 countries.push(vin.country);
+            }
+            
+            //Ajout des années dans un tableau pour affichage dans le filtre
+            if(years.indexOf(vin.year)===-1) {
                 years.push(vin.year);
             }
+            
         });
+        
         
         $('#liste li').on('click', function() {
             let idWine = $(this).data('id');
@@ -62,6 +68,8 @@ function showWines() {
               
         $('#listYears').empty();
         
+        years.sort();
+        
         years.forEach(year => {
            $('#listYears').append('<a class="dropdown-item year-item" href="#">'+year+'</a>');
         });
@@ -69,17 +77,14 @@ function showWines() {
         $('.year-item').on('click', function(){
              let yearSelected = $(this).text();
              var vinsArray = [];
-             var count = Object.keys(vins).length;
+             let vinNewArray = [];
              
-             for(var i = 1; i <= count; i++){
-             
-                 vinsArray.push(vins[i]);
+             for(let prop in vins){
+                if(vins[prop].year == yearSelected){
+                    vinNewArray.push(vins[prop]);
+                }
              }
-            
-             console.log(yearSelected);
-             vinNewArray = vinsArray.filter( vin => {
-                 return vin.year == yearSelected
-             })
+
             
             $('#liste').empty();
             $('#dropDownYear').text(yearSelected);
@@ -87,8 +92,6 @@ function showWines() {
                 $('#liste').append('<li class="list-group-item" data-id="'+vin.id+'">'+vin.name+'</li>');
             });
         })
-        
-        
         
         
         //Mise à jour de la liste des filtres par pays

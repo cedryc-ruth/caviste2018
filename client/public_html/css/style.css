@@ -42,6 +42,10 @@ header {
     text-align: center;
 }
 
+.dropdown{
+    display: inline-block;
+}
+
 footer {
     text-align: center;
     margin: 20px 0 5px 0;
