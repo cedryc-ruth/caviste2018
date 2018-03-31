@@ -5,6 +5,7 @@
  */
 const API_URL = 'http://caviste.localhost/api';
 const CATALOGUE_URL = 'http://caviste.localhost/caviste2018/server/public';
+let vins = [];
 
 function reportError(message, type = 'secondary') {
     $('#toolbar .alert').html(message).animate({opacity:1}).animate({opacity:0});
@@ -31,8 +32,9 @@ function showWines() {
     $('#liste').empty();  
     
     $.get(API_URL + '/wines', function(data) {
-        let vins = JSON.parse(data);
+        vins = JSON.parse(data);
         let countries = [];
+        let years = []; 
         
         $.each(vins, function(key, vin) {
             $('#liste').append('<li class="list-group-item" data-id="'+vin.id+'">'+vin.name+'</li>');
@@ -41,7 +43,14 @@ function showWines() {
             if(countries.indexOf(vin.country)===-1) {
                 countries.push(vin.country);
             }
+            
+            //Ajout des années dans un tableau pour affichage dans le filtre
+            if(years.indexOf(vin.year)===-1) {
+                years.push(vin.year);
+            }
+            
         });
+        
         
         $('#liste li').on('click', function() {
             let idWine = $(this).data('id');
@@ -55,6 +64,36 @@ function showWines() {
                 reportError('Désolé, la sélection n\'est pas disponible en ce moment.','error');
             });
         });
+        
+        //Mise à jour de la liste des filtres par année
+              
+        $('#listYears').empty();
+        
+        years.sort();
+        
+        years.forEach(year => {
+           $('#listYears').append('<a class="dropdown-item year-item" href="#">'+year+'</a>');
+        });
+        
+        $('.year-item').on('click', function(){
+             let yearSelected = $(this).text();
+             var vinsArray = [];
+             let vinNewArray = [];
+             
+             for(let prop in vins){
+                if(vins[prop].year == yearSelected){
+                    vinNewArray.push(vins[prop]);
+                }
+             }
+
+            
+            $('#liste').empty();
+            $('#dropDownYear').text(yearSelected);
+            $.each(vinNewArray, function(key, vin) {
+                $('#liste').append('<li class="list-group-item" data-id="'+vin.id+'">'+vin.name+'</li>');
+            });
+        })
+        
         
         //Mise à jour de la liste des filtres par pays
         $('#listePays').empty();
