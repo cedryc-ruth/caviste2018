@@ -50,3 +50,8 @@ footer {
     text-align: center;
     margin: 20px 0 5px 0;
 }
+
+#map {
+    height: 250px;
+    width: 100%;
+}

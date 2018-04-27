@@ -60,6 +60,22 @@ function showWines() {
                 
                 fillForm(vin);
                 
+                //Mettre à jour la carte Google Maps
+                let geocoder = new google.maps.Geocoder;
+                geocoder.geocode({'address': vin.region+', '+vin.country }, function(results, status) {
+                    if(status=='OK') {  //console.log(results)
+                        let map = new google.maps.Map($('#map')[0], {
+                            //center: { lat: 50.850346, lng: 4.3517 },
+                            zoom : 6
+                        });
+                        map.setCenter(results[0].geometry.location);
+                    } else {
+                        reportError('Impossible de localiser cette région!');
+                    }
+                });
+                
+                console.log(geocoder);
+                
             }).fail(function() {
                 reportError('Désolé, la sélection n\'est pas disponible en ce moment.','error');
             });
@@ -355,7 +371,65 @@ $(document).ready(function() {
         return false;
     });
     
+    
+    let geoloc = navigator.geolocation;
+    geoloc.getCurrentPosition(function(position) {
+        console.log(position);
+        let coords = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
+        
+        let map = new google.maps.Map($('#map')[0],{
+            center: coords,
+            zoom: 10
+        });
+    }, function(positionError) { 
+        //console.log(positionError);
+        //Géolocaliser par IP
+        $.getJSON('http://ip-api.com/json/?callback=?',function(data) {
+            if(data.status=='success') {
+                let coords = {
+                    lat: data.lat,
+                    lng: data.lon
+                };
+                
+                let map = new google.maps.Map($('#map')[0],{
+                    center: coords,
+                    zoom: 10
+                });
+            }
+        });
+        
+    });
+    //console.log(geoloc.getCurrentPosition());
+    
+    
 });
 
-
-
+function initMap() {
+    let carte = $('#map')[0];
+    let coords = { lat: 50.850346, lng: 4.3517 };
+    
+    let map = new google.maps.Map(carte,{
+        center: coords,
+        zoom: 10
+    });
+    
+    let marker = new google.maps.Marker({
+        position: coords,
+        map: map,
+        title: 'Bruxelles',
+        icon: 'pictures/marker.png'
+    });
+    marker.setLabel('*o*');
+    marker.addListener('click',function() {        
+        info.open(this.get('map'),this);
+    });
+    
+    let info = new google.maps.InfoWindow({
+        content: 'L\'EPFC se trouve ici ;)'
+    });
+    
+    
+}
