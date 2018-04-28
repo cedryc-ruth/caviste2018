@@ -10,11 +10,13 @@ and open the template in the editor.
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="../node_modules/jquery-ui-dist/jquery-ui.min.css">
 
 <!-- Public libraries -->
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
 <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../node_modules/jquery-ui-dist/jquery-ui.min.js"></script>
 
 <link href="http://hayageek.github.io/jQuery-Upload-File/4.0.11/uploadfile.css" rel="stylesheet">
 <script src="http://hayageek.github.io/jQuery-Upload-File/4.0.11/jquery.uploadfile.min.js"></script>
@@ -66,62 +68,71 @@ and open the template in the editor.
                 <li class="list-group-item">VIN 5</li>
             </ul>
         </div>
-        <div class="col-lg-9">
-            <form id="frmWine" action="#">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="idWine">Id:</label>
-                            <input type="number" class="form-control" id="idWine" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="nameWine">Name:</label>
-                            <input type="text" class="form-control" id="nameWine">
-                        </div>
-                        <div class="form-group">
-                            <label for="grapesWine">Grapes:</label>
-                            <input type="text" class="form-control" id="grapesWine">
-                        </div>
-                        <div class="form-group">
-                            <label for="countryWine">Country:</label>
-                            <input type="text" class="form-control" id="countryWine">
-                        </div>
-                        <div class="form-group">
-                            <label for="regionWine">Region:</label>
-                            <input type="text" class="form-control" id="regionWine">
-                        </div>
-                        <div class="form-group">
-                            <label for="yearWine">Year:</label>
-                            <input type="number" value="2000" class="form-control" id="yearWine">
-                        </div>
-                        <div class="form-group">
-						<!-- les notes sont ici-->
-                            <label for="notes">Notes:</label>
-                            <textarea name="notes" id="notes" class="form-control" cols="100%" rows="5"></textarea>
-                        </div>
-                        
-                    </div>
-                    <div class="col-lg-6">
-                        <figure>
-                            <img src="pictures/wine1.jpg" alt="Wine 1" height="300">
-                            <figcaption>Wine 1</figcaption>
-                        </figure>
-                        <div class="input-group mb-3">
-                            <div class="custom-file" id="uploadZone">
-                           <!--   <input type="file" class="custom-file-input" name="newPicture" id="newPicture"> -->
-                           <!--   <label class="custom-file-label" for="newPicture">Choisir image</label> -->
+        <div class="col-lg-9" id="tabs">
+            <ul>
+                <li><a href="#card">Card</a></li>
+                <li><a href="#big-map">Map</a></li>
+            </ul>
+            <div id="card">
+                <form id="frmWine" action="#">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="idWine">Id:</label>
+                                <input type="number" class="form-control" id="idWine" readonly>
                             </div>
-                          </div> 
-                        <div class ="text-center">
-						<!-- les boutons sont ici-->
-                            <button type="button" class="btn btn-primary" id="btSaveWine">Save</button>
-                            <button type="button" class="btn btn-danger" id="btDeleteWine">Delete</button>
-							
+                            <div class="form-group">
+                                <label for="nameWine">Name:</label>
+                                <input type="text" class="form-control" id="nameWine">
+                            </div>
+                            <div class="form-group">
+                                <label for="grapesWine">Grapes:</label>
+                                <input type="text" class="form-control" id="grapesWine">
+                            </div>
+                            <div class="form-group">
+                                <label for="countryWine">Country:</label>
+                                <input type="text" class="form-control" id="countryWine">
+                            </div>
+                            <div class="form-group">
+                                <label for="regionWine">Region:</label>
+                                <input type="text" class="form-control" id="regionWine">
+                            </div>
+                            <div class="form-group">
+                                <label for="yearWine">Year:</label>
+                                <input type="number" value="2000" class="form-control" id="yearWine">
+                            </div>
+                            <div class="form-group">
+                                                    <!-- les notes sont ici-->
+                                <label for="notes">Notes:</label>
+                                <textarea name="notes" id="notes" class="form-control" cols="100%" rows="5"></textarea>
+                            </div>
+
                         </div>
-                        <div id="map"></div>
+                        <div class="col-lg-6">
+                            <figure>
+                                <img src="pictures/wine1.jpg" alt="Wine 1" height="300">
+                                <figcaption>Wine 1</figcaption>
+                            </figure>
+                            <div class="input-group mb-3">
+                                <div class="custom-file" id="uploadZone">
+                               <!--   <input type="file" class="custom-file-input" name="newPicture" id="newPicture"> -->
+                               <!--   <label class="custom-file-label" for="newPicture">Choisir image</label> -->
+                                </div>
+                              </div> 
+                            <div class ="text-center">
+                                                    <!-- les boutons sont ici-->
+                                <button type="button" class="btn btn-primary" id="btSaveWine">Save</button>
+                                <button type="button" class="btn btn-danger" id="btDeleteWine">Delete</button>
+
+                            </div>
+                            <div id="map"></div>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div id="big-map">
+                
+            </div>
         </div>
     </div>
 </main>

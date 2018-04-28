@@ -49,6 +49,40 @@ function showWines() {
                 years.push(vin.year);
             }
             
+            //Mettre à jour la carte Google Maps
+            let geocoder = new google.maps.Geocoder;    //console.log(geocoder);
+
+            geocoder.geocode({'address': vin.region+', '+vin.country }, function(results, status) {
+                if(status=='OK') {  //console.log(results)
+                    //Ajout des coordonnées au vin
+                    vin.coords = results[0].geometry.location;
+                    
+                    //Récupérer les coordonnées region/country de chaque vin
+                    console.log(vins);
+                    //Ajouter des marqueurs sur la carte pour chaque vin
+                    let marker = new google.maps.Marker({
+                        position: vin.coords,
+                        map: bigMap,
+                        title: vin.name
+                        /*icon: 'pictures/marker.png'  bottle | drop */
+                    });
+
+                    marker.addListener('click',function() {        
+                        info.open(this.get('bigMap'),this);
+                    });
+
+                    //Ajouter une info pour chaque marqueur (name, grapes, year,...) 
+                    let info = new google.maps.InfoWindow({
+                        content: '<h2>vin.name</h2>\
+                        <table>\n\
+                            <tr><td>Country</td><td>'+vin.country+'</td></tr>\n\
+                            <tr><td>Region</td><td>'+vin.region+'</td></tr>\n\
+                        </table>'
+                    });
+                } else {
+                    reportError('Impossible de localiser cette région!');
+                }
+            });
         });
         
         
@@ -59,23 +93,6 @@ function showWines() {
                 let vin = JSON.parse(data);
                 
                 fillForm(vin);
-                
-                //Mettre à jour la carte Google Maps
-                let geocoder = new google.maps.Geocoder;
-                geocoder.geocode({'address': vin.region+', '+vin.country }, function(results, status) {
-                    if(status=='OK') {  //console.log(results)
-                        let map = new google.maps.Map($('#map')[0], {
-                            //center: { lat: 50.850346, lng: 4.3517 },
-                            zoom : 6
-                        });
-                        map.setCenter(results[0].geometry.location);
-                    } else {
-                        reportError('Impossible de localiser cette région!');
-                    }
-                });
-                
-                console.log(geocoder);
-                
             }).fail(function() {
                 reportError('Désolé, la sélection n\'est pas disponible en ce moment.','error');
             });
@@ -231,6 +248,8 @@ function getFormData() {
 
 $(document).ready(function() {    
   //Initialisation de la page
+    $('#tabs').tabs();
+    
     //Afficher la liste des vins
     showWines();
     
@@ -371,19 +390,15 @@ $(document).ready(function() {
         return false;
     });
     
-    
+    //Géolocalisation de l'internaute
     let geoloc = navigator.geolocation;
-    geoloc.getCurrentPosition(function(position) {
-        console.log(position);
+    geoloc.getCurrentPosition(function(position) {  //console.log(position);
         let coords = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
         };
         
-        let map = new google.maps.Map($('#map')[0],{
-            center: coords,
-            zoom: 10
-        });
+        window.map.setCenter(coords);
     }, function(positionError) { 
         //console.log(positionError);
         //Géolocaliser par IP
@@ -394,24 +409,18 @@ $(document).ready(function() {
                     lng: data.lon
                 };
                 
-                let map = new google.maps.Map($('#map')[0],{
-                    center: coords,
-                    zoom: 10
-                });
+                window.map.setCenter(coords);
             }
         });
-        
     });
-    //console.log(geoloc.getCurrentPosition());
-    
-    
 });
 
+//Affichage de la mini-map
 function initMap() {
     let carte = $('#map')[0];
     let coords = { lat: 50.850346, lng: 4.3517 };
     
-    let map = new google.maps.Map(carte,{
+    window.map = new google.maps.Map(carte,{
         center: coords,
         zoom: 10
     });
@@ -431,5 +440,10 @@ function initMap() {
         content: 'L\'EPFC se trouve ici ;)'
     });
     
-    
+    //Création de la grande carte
+        //Créer la carte
+    window.bigMap = new google.maps.Map($('#big-map')[0],{
+        center: {lat: 50, lng: 0},
+        zoom: 3
+    });
 }
