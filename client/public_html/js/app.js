@@ -63,8 +63,8 @@ function showWines() {
                     let marker = new google.maps.Marker({
                         position: vin.coords,
                         map: bigMap,
-                        title: vin.name
-                        /*icon: 'pictures/marker.png'  bottle | drop */
+                        title: vin.name,
+                        icon: 'pictures/marker-wine.png'
                     });
 
                     marker.addListener('click',function() {        
@@ -73,7 +73,7 @@ function showWines() {
 
                     //Ajouter une info pour chaque marqueur (name, grapes, year,...) 
                     let info = new google.maps.InfoWindow({
-                        content: '<h2>vin.name</h2>\
+                        content: '<h2>'+vin.name+'</h2>\
                         <table>\n\
                             <tr><td>Country</td><td>'+vin.country+'</td></tr>\n\
                             <tr><td>Region</td><td>'+vin.region+'</td></tr>\n\
@@ -443,7 +443,7 @@ function initMap() {
     //Création de la grande carte
         //Créer la carte
     window.bigMap = new google.maps.Map($('#big-map')[0],{
-        center: {lat: 50, lng: 0},
-        zoom: 3
+        center: {lat: 20, lng: -30},
+        zoom: 2
     });
 }
